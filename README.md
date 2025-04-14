@@ -9,7 +9,6 @@ A **Product Circularity Datasheet** is a standardized document that communicates
 This repository contains:
 - 📄 Example templates of PCDS (human-readable)
 - 🧾 Machine-readable versions (JSON)
-- 🧰 Tools to generate and validate PCDS
 - 📚 Documentation & usage guides
 
 ---
