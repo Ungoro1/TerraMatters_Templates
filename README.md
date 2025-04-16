@@ -13,32 +13,22 @@ This repository contains:
 
 ---
 
-## 📁 Repository Structure
+# 📁 Templates IDs
 <details>
-## 📄 PCDS ID Format & Implementation Guide
+  
+## 📄 Templates IDs Format & Implementation Guide
 
-This guide describes how the **PCDS ID** is structured and how to implement it in a practical, scalable way.
+This guide describes how the **Templates ID** is structured and how to implement it in a practical, scalable way.
 
----
-
-## 🧩 PCDS ID Structure
-
-Each PCDS ID is composed of:
-
-
-**Example:**
-
-
----
 
 ## 📚 Field Descriptions
 
 | Field                  | Length | Description                                                                 |
 |------------------------|--------|-----------------------------------------------------------------------------|
-| `Template Issuer`      | 3      | Identifies the template issuer (e.g., `010` for Terra Matters)             |
-| `Document Type`        | 2      | Document type code (e.g., `02` for PCDS)                                   |
-| `Template Code`        | 3      | Template-specific ID within the issuer/type context                        |
-| `Check Digit`          | 1      | Validates the 8-digit prefix using a weighted algorithm                    |
+| `Template Issuer`      | 3      | Identifies the template issuer (e.g. Terra Matters) — [see `registries/issuers`](./registries/issuers) |
+| `Document Type`        | 2      | Document type code (e.g., `02` for PCDS) — [see `registries/documents`](./registries/documents)                                   |
+| `Template Code`        | 3      | Template-specific ID within the issuer/type context — [see `registries/documents`](./registries/documents)                        |
+| `Check Digit`          | 1      | Validates the 8-digit prefix using a weighted algorithm                     |
 | `PCDS Sequence Number` | 7      | Sequential number per PCDS document issued for this template               |
 | `Revision` (optional)  | —      | Version number (e.g., `:001`)                                              |
 
@@ -46,7 +36,7 @@ Each PCDS ID is composed of:
 
 ## ✅ Check Digit Calculation
 
-The **check digit** helps detect input errors (like in GTIN or barcode systems).
+The **check digit** helps detect input errors.
 
 ### Weights
 
@@ -56,32 +46,40 @@ The **check digit** helps detect input errors (like in GTIN or barcode systems).
 
 ### Example Calculation
 
-For prefix: `01002001`
+For prefix: `010 02 001`
+
+Step 1 : Multiply value of each position by their corresponding weight :
+| Position   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|------------|---|---|---|---|---|---|---|---|
+| Weight     | 1 | 3 | 1 | 3 | 1 | 3 | 1 | 3 |
+| Value     | 0 | 1 | 0 | 0 | 2 | 0 | 0 | 1 |
+| result     | 0 | 3 | 0 | 0 | 2 | 0 | 0 | 3 |
+
+Step 2 : Sum each resulting values
+0+3+0+0+2+0+0+3 =8
+
+Step 3: Subtract the sum from nearest equal or higher multiple of ten = Check Digit
+Check digit = 10-8 = 2
+
+## 📁 Document ID
+
+A **Document ID** is a unique identifier for each document generated from a specific template. It is based on a simple incrementation of the number of existing documents using that template.
+
+### 🔢 Example
+
+**Template Prefix**:  
+`010 02 001 2`
+
+The 75th document created from this template will have the following PCDS ID:
+`010 02 001 2 0000075`
+
+### 🔁 Revision Support
+
+A revision number can be added to reflect updates to the same document. For example:
 
 
-Resulting prefix = `010 02 001 2`
+This represents version 1 of the document `010 02 001 2 0000075:001`.
 
----
-
-## 🚀 MVP Implementation Strategy
-
-Since we only use one template issuer and one document type at launch, we **don't need to build registries yet**.
-
-### Simplified Approach:
-- Add the fixed prefix (`Template Issuer + Document Type + Template Code + Check Digit`) directly in each `template.json`.
-
-#### Example `template.json`:
-
-```json
-{
-  "template_uuid": "some-uuid",
-  "template_name": "PCDS Sample Template",
-  "pcds_id_prefix": "010 02 001 2"
-}
-
-
-PCDS ID: 010 02 001 2 0000075
-With revision: 010 02 001 2 0000075:001
 
 </details>
 
