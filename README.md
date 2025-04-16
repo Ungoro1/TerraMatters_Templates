@@ -14,7 +14,7 @@ This repository contains:
 ---
 
 ## 📁 Repository Structure
-
+<details>
 ## 📄 PCDS ID Format & Implementation Guide
 
 This guide describes how the **PCDS ID** is structured and how to implement it in a practical, scalable way.
@@ -83,5 +83,5 @@ Since we only use one template issuer and one document type at launch, we **don'
 PCDS ID: 010 02 001 2 0000075
 With revision: 010 02 001 2 0000075:001
 
-
+</details>
 
